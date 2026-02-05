@@ -5,32 +5,33 @@
   --foreground: #ededed;
 }
 
-/* LENIS SCROLL RESET */
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: var(--font-jetbrainsMono);
+  overflow-x: hidden;
+}
+
+/* Hide Scrollbar for Horizontal Nav on Mobile */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+/* Lenis Scroll Settings */
 html.lenis,
 html.lenis body {
   height: auto;
 }
-
 .lenis.lenis-smooth {
   scroll-behavior: auto !important;
 }
-
 .lenis.lenis-smooth [data-lenis-prevent] {
   overscroll-behavior: contain;
 }
-
 .lenis.lenis-stopped {
   overflow: hidden;
-}
-
-.lenis.lenis-scrolling iframe {
-  pointer-events: none;
-}
-
-body {
-  color: var(--foreground);
-  background: var(--background);
-  overflow-x: hidden; /* Critical for scroll animations */
-  -webkit-font-smoothing: antialiased;
-  font-family: var(--font-jetbrainsMono);
 }

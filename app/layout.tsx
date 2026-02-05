@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { JetBrains_Mono } from "next/font/google";
+import SmoothScroll from "../components/patterns/smooth-scroll";
+import Preloader from "../components/layout/Preloader";
+import { Navbar } from "../components/layout/Navbar";
 import "./globals.css";
-import SmoothScroll from "./components/SmoothScroll";
-import Preloader from "./components/Preloader";
 
 const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
@@ -13,13 +14,17 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   title: "Glen Jayson Dmello | Full Stack & Mobile Developer",
   description:
-    "Portfolio of Glen Jayson Dmello, a Full Stack Developer specializing in MERN, NestJS, and Flutter.",
+    "Portfolio of Glen Jayson Dmello, a Full Stack Developer specializing in MERN, Next.js, NestJS, and Flutter.",
   keywords: [
     "Full Stack Developer",
     "MERN",
     "Flutter",
     "NestJS",
     "React",
+    "JavaScript",
+    "TypeScript",
+    "Next.js",
+    "Mobile Developer",
     "Portfolio",
   ],
 };
@@ -35,6 +40,7 @@ export default function RootLayout({
         className={`${jetbrainsMono.variable} antialiased bg-background text-foreground selection:bg-accent selection:text-white`}
       >
         <Preloader />
+        <Navbar />
         <SmoothScroll>{children}</SmoothScroll>
       </body>
     </html>

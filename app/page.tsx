@@ -1,17 +1,14 @@
-import Hero from "./components/Hero";
-import About from "./components/About";
-import TechStack from "./components/TechStack";
-import Projects from "./components/Projects";
-import GithubGraph from "./components/GithubGraph";
-import Contact from "./components/Contact";
-import Navbar from "./components/Navbar";
-import Footer from "./components/Footer";
+import Hero from "../components/sections/Hero";
+import About from "../components/sections/About";
+import TechStack from "../components/sections/TechStack";
+import Projects from "../components/sections/Projects";
+import GithubGraph from "../components/sections/GithubGraph";
+import Contact from "../components/sections/Contact";
+import Footer from "../components/layout/Footer";
 
 export default function Home() {
   return (
     <main className="bg-[#050505] min-h-screen">
-      <Navbar /> {/* 2. Add Navbar at the top */}
-      {/* 3. Add IDs to sections so Navbar links work */}
       <div id="home">
         <Hero />
       </div>
