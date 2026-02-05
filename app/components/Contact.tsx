@@ -3,19 +3,72 @@ import { useState, useRef } from "react";
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { Mail, Github, Linkedin, Copy, Check } from "lucide-react";
+import { Send, CheckCircle, AlertCircle } from "lucide-react";
+import emailjs from "@emailjs/browser";
+import { Toaster, toast } from "sonner";
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function Contact() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [copied, setCopied] = useState(false);
-  const email = "glendmello04@gmail.com";
+  const formRef = useRef<HTMLFormElement>(null);
+  const [loading, setLoading] = useState(false);
 
-  const handleCopy = () => {
-    navigator.clipboard.writeText(email);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+  // Form State
+  const [form, setForm] = useState({ name: "", email: "", message: "" });
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+
+    const serviceId =
+      process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID || "YOUR_SERVICE_ID";
+    const templateId =
+      process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID || "YOUR_TEMPLATE_ID";
+    const publicKey =
+      process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY || "YOUR_PUBLIC_KEY";
+
+    emailjs
+      .send(
+        serviceId,
+        templateId,
+        {
+          from_name: form.name,
+          from_email: form.email,
+          message: form.message,
+        },
+        publicKey,
+      )
+      .then(() => {
+        toast.success("Message sent successfully!", {
+          icon: <CheckCircle className="text-green-500" />,
+          style: {
+            background: "#18181b",
+            color: "#fff",
+            border: "1px solid #27272a",
+          },
+        });
+        setForm({ name: "", email: "", message: "" });
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error(error);
+        toast.error("Failed to send message. Please try again.", {
+          icon: <AlertCircle className="text-red-500" />,
+          style: {
+            background: "#18181b",
+            color: "#fff",
+            border: "1px solid #27272a",
+          },
+        });
+        setLoading(false);
+      });
   };
 
   useGSAP(
@@ -28,7 +81,7 @@ export default function Contact() {
         ease: "power3.out",
         scrollTrigger: {
           trigger: containerRef.current,
-          start: "top 80%",
+          start: "top 70%",
         },
       });
     },
@@ -36,78 +89,78 @@ export default function Contact() {
   );
 
   return (
-    // FIX: z-50 forces this section to slide ON TOP of the projects
-    // bg-background ensures it's solid black and covers the projects underneath
-    <footer
+    <section
       ref={containerRef}
       className="relative z-50 py-24 bg-background overflow-hidden"
     >
-      {/* Visual Separation from Projects */}
+      {/* Background Effects */}
       <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
-
       <div className="absolute inset-0 bg-grid-pattern opacity-[0.03]" />
       <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-accent/5 rounded-full blur-[120px] pointer-events-none" />
 
-      <div className="container mx-auto px-6 relative z-10 text-center">
-        <h2 className="contact-item text-5xl md:text-7xl font-bold text-white mb-8 tracking-tight">
-          Let’s Build <br />
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent to-purple-400">
-            Something Epic.
-          </span>
-        </h2>
+      {/* Toaster for Notifications */}
+      <Toaster position="bottom-center" />
 
-        <p className="contact-item text-xl text-gray-400 max-w-2xl mx-auto mb-12">
-          I’m currently available for freelance work and full-time positions. If
-          you have a project that needs some creative coding magic, let`&apos;`s
-          hear it.
-        </p>
-
-        {/* Copy Email Button */}
-        <div className="contact-item flex justify-center mb-16">
-          <button
-            onClick={handleCopy}
-            className="group relative flex items-center gap-4 px-8 py-4 bg-white/5 border border-white/10 rounded-2xl hover:bg-white/10 transition-all active:scale-95"
-          >
-            <Mail className="text-gray-300" />
-            <span className="text-xl md:text-2xl font-mono text-white">
-              {email}
+      <div className="container mx-auto px-6 relative z-10">
+        <div className="max-w-4xl mx-auto text-center mb-16">
+          <h2 className="contact-item text-5xl md:text-7xl font-bold text-white mb-6 tracking-tight">
+            Let&apos;s Build <br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent to-purple-400">
+              Something Epic.
             </span>
-            <div className="ml-4 p-2 bg-white/10 rounded-lg">
-              {copied ? (
-                <Check className="text-green-500 w-5 h-5" />
-              ) : (
-                <Copy className="text-gray-400 w-5 h-5 group-hover:text-white" />
-              )}
-            </div>
-            <span className="absolute -top-10 left-1/2 -translate-x-1/2 px-3 py-1 bg-accent text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
-              {copied ? "Copied!" : "Click to Copy"}
-            </span>
-          </button>
-        </div>
-
-        <div className="contact-item flex justify-center gap-8 mb-16">
-          <a
-            href="#"
-            className="p-4 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 hover:scale-110 transition-all text-white group"
-          >
-            <Github className="w-6 h-6 group-hover:text-accent transition-colors" />
-          </a>
-          <a
-            href="#"
-            className="p-4 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 hover:scale-110 transition-all text-white group"
-          >
-            <Linkedin className="w-6 h-6 group-hover:text-accent transition-colors" />
-          </a>
-        </div>
-
-        <div className="contact-item pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center text-gray-500 text-sm">
-          <p>
-            © {new Date().getFullYear()} Glen Jayson Dmello. All rights
-            reserved.
+          </h2>
+          <p className="contact-item text-xl text-gray-400 max-w-2xl mx-auto">
+            Have a project in mind? Send me a message and let&apos;s discuss how
+            we can bring your ideas to life.
           </p>
-          <p className="mt-2 md:mt-0">Built with Next.js, Tailwind & GSAP</p>
+        </div>
+
+        {/* Contact Form */}
+        <div className="contact-item max-w-2xl mx-auto">
+          <form ref={formRef} onSubmit={handleSubmit} className="space-y-4">
+            <div className="grid md:grid-cols-2 gap-4">
+              <input
+                type="text"
+                name="name"
+                placeholder="Your Name"
+                value={form.name}
+                onChange={handleChange}
+                required
+                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-4 text-white placeholder-gray-500 focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-all"
+              />
+              <input
+                type="email"
+                name="email"
+                placeholder="Your Email"
+                value={form.email}
+                onChange={handleChange}
+                required
+                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-4 text-white placeholder-gray-500 focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-all"
+              />
+            </div>
+            <textarea
+              name="message"
+              rows={5}
+              placeholder="Your Message"
+              value={form.message}
+              onChange={handleChange}
+              required
+              className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-4 text-white placeholder-gray-500 focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-all resize-none"
+            />
+
+            <div className="flex justify-end">
+              <button
+                type="submit"
+                disabled={loading}
+                className="flex items-center gap-2 px-8 py-4 bg-white text-black rounded-full font-bold hover:bg-gray-200 transition-transform active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {loading ? "Sending..." : "Send Message"}
+                <Send size={18} />
+              </button>
+            </div>
+          </form>
         </div>
       </div>
-    </footer>
+    </section>
   );
 }

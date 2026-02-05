@@ -2,18 +2,22 @@
 import { useRef } from "react";
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
-import { GraduationCap, Code, Brain } from "lucide-react";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { Sparkles, Terminal } from "lucide-react";
+
+gsap.registerPlugin(ScrollTrigger);
 
 export default function About() {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useGSAP(
     () => {
-      gsap.from(".bento-item", {
+      // Animate the single large card
+      gsap.from(".about-card", {
         y: 50,
         opacity: 0,
-        stagger: 0.1,
-        duration: 1,
+        duration: 1.2,
+        ease: "power3.out",
         scrollTrigger: {
           trigger: containerRef.current,
           start: "top 80%",
@@ -24,79 +28,78 @@ export default function About() {
   );
 
   return (
-    <section ref={containerRef} className="py-24 bg-background relative z-10">
-      <div className="container mx-auto px-6">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {/* 1. Education Block (Large) */}
-          <div className="bento-item md:col-span-2 bg-card-bg border border-white/10 rounded-3xl p-8 md:p-12 hover:border-accent/30 transition-colors group">
-            <div className="flex items-start justify-between mb-8">
-              <div className="p-4 bg-accent/10 rounded-2xl text-accent">
-                <GraduationCap size={32} />
+    <section
+      ref={containerRef}
+      id="about"
+      // Mobile: Reduced padding (py-12). Desktop: Grand padding (md:py-32)
+      className="py-12 md:py-32 bg-background relative z-10"
+    >
+      <div className="container mx-auto px-4 sm:px-6 md:px-12">
+        {/* Header - Compact on mobile */}
+        <div className="mb-8 md:mb-16 text-center md:text-left">
+          <h2 className="text-3xl md:text-6xl font-bold text-white mb-4 md:mb-6 tracking-tight">
+            About <span className="text-zinc-500">Me.</span>
+          </h2>
+          <div className="h-1 w-16 md:w-20 bg-accent rounded-full mx-auto md:mx-0" />
+        </div>
+
+        {/* Single Unified Box */}
+        <div className="about-card relative w-full bg-[#0a0a0a] border border-white/10 rounded-2xl md:rounded-3xl p-6 md:p-16 overflow-hidden group hover:border-accent/30 transition-colors duration-500">
+          {/* Background Effects */}
+          <div className="absolute inset-0 bg-grid-pattern opacity-[0.05] pointer-events-none" />
+          <div className="absolute top-0 right-0 w-64 h-64 bg-accent/5 blur-[80px] rounded-full pointer-events-none group-hover:bg-accent/10 transition-colors" />
+
+          <div className="relative z-10 flex flex-col md:flex-row gap-6 md:gap-10 items-start">
+            {/* Icon Anchor - Smaller on mobile */}
+            <div className="shrink-0 p-3 md:p-4 bg-white/5 rounded-xl md:rounded-2xl border border-white/10 text-accent group-hover:scale-110 transition-transform duration-500 hidden sm:block">
+              <Terminal size={32} className="md:w-10 md:h-10" />
+            </div>
+
+            {/* Text Content */}
+            <div className="space-y-4 md:space-y-6 max-w-4xl">
+              {/* Mobile Icon (Visible only on very small screens inline) */}
+              <div className="flex items-center gap-3 sm:hidden mb-2">
+                <div className="p-2 bg-white/5 rounded-lg border border-white/10 text-accent">
+                  <Terminal size={24} />
+                </div>
+                <span className="text-sm text-zinc-500 font-mono">
+                  2026 Grad
+                </span>
               </div>
-              <span className="text-gray-500 font-mono text-sm">
-                2022 — 2026
-              </span>
-            </div>
-            <h3 className="text-3xl font-bold text-white mb-2 group-hover:text-accent transition-colors">
-              Bachelor of Engineering in CS
-            </h3>
-            <p className="text-xl text-gray-400 mb-6">
-              St. Joseph Engineering College (VTU)
-            </p>
-            <p className="text-gray-500 leading-relaxed">
-              Focused on advanced algorithms, distributed systems, and AI
-              integration. Consistently ranked among the top performers with a
-              passion for practical application in hackathons.
-            </p>
-          </div>
 
-          {/* 2. Philosophy Block (Small) */}
-          <div className="bento-item bg-gradient-to-br from-purple-900/20 to-blue-900/20 border border-white/10 rounded-3xl p-8 flex flex-col justify-center text-center">
-            <div className="mx-auto p-4 bg-white/5 rounded-full mb-6 text-purple-400">
-              <Brain size={32} />
-            </div>
-            <h4 className="text-xl font-bold text-white mb-4">
-              Problem Solver
-            </h4>
-            <p className="text-gray-400 text-sm">
-              "I don't just write code; I architect solutions that scale and
-              solve real user pain points."
-            </p>
-          </div>
-
-          {/* 3. Tech Focus Block (Small) */}
-          <div className="bento-item bg-card-bg border border-white/10 rounded-3xl p-8 flex flex-col justify-center">
-            <div className="mb-6 text-green-400">
-              <Code size={32} />
-            </div>
-            <h4 className="text-xl font-bold text-white mb-2">
-              Full Stack + Mobile
-            </h4>
-            <p className="text-gray-400 text-sm mb-4">
-              Building bridges between complex backends and buttery smooth
-              frontends.
-            </p>
-            <div className="flex gap-2">
-              <span className="px-3 py-1 text-xs bg-white/5 rounded-full border border-white/10 text-gray-300">
-                MERN
-              </span>
-              <span className="px-3 py-1 text-xs bg-white/5 rounded-full border border-white/10 text-gray-300">
-                Flutter
-              </span>
-            </div>
-          </div>
-
-          {/* 4. Availability Block (Wide) */}
-          <div className="bento-item md:col-span-2 bg-white/5 border border-white/10 rounded-3xl p-8 flex items-center justify-between">
-            <div>
-              <h3 className="text-xl font-bold text-white mb-1">
-                Open for Collaboration
+              <h3 className="text-xl md:text-3xl font-bold text-white leading-tight">
+                Passionate Developer & <br />
+                <span className="text-zinc-500">CS Engineering Student.</span>
               </h3>
-              <p className="text-gray-400 text-sm">
-                Interested in working on high-impact projects?
-              </p>
+
+              <div className="text-sm md:text-xl text-zinc-400 leading-relaxed space-y-4 md:space-y-6">
+                <p>
+                  I am a passionate{" "}
+                  <strong className="text-white">MERN Stack Developer</strong>{" "}
+                  and{" "}
+                  <strong className="text-white">Flutter App Developer</strong>,
+                  currently pursuing Computer Science Engineering at{" "}
+                  <span className="text-accent">SJEC Mangalore VTU</span>.
+                </p>
+                <p>
+                  I specialize in building intuitive, scalable, and secure web
+                  and mobile applications, seamlessly integrating front-end and
+                  back-end development. With a strong focus on performance and
+                  user experience, I strive to create efficient, high-quality
+                  solutions.
+                </p>
+              </div>
+
+              <div className="pt-4 md:pt-6 flex items-start md:items-center gap-3 text-white font-medium text-xs md:text-base">
+                <div className="p-1.5 md:p-2 bg-yellow-500/10 rounded-full text-yellow-500 shrink-0">
+                  <Sparkles size={16} className="md:w-5 md:h-5" />
+                </div>
+                <span>
+                  Always eager to collaborate on impactful projects—let’s
+                  connect! 🚀
+                </span>
+              </div>
             </div>
-            <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse shadow-[0_0_10px_#22c55e]" />
           </div>
         </div>
       </div>
