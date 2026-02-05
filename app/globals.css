@@ -32,4 +32,5 @@ body {
   background: var(--background);
   overflow-x: hidden; /* Critical for scroll animations */
   -webkit-font-smoothing: antialiased;
+  font-family: var(--font-jetbrainsMono);
 }

@@ -18,7 +18,7 @@ const config: Config = {
         "border-dim": "#ffffff1a",
       },
       fontFamily: {
-        sans: ["var(--font-inter)"],
+        sans: ["var(--font-jetbrainsMono)", "monospace"],
       },
       backgroundImage: {
         "grid-pattern":
