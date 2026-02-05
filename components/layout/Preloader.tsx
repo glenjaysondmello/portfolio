@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { AppleHelloEnglishEffect } from "./ui/apple-hello-effect";
+import { HelloEnglishEffect } from "../patterns/hello-effect";
 
 export default function Preloader() {
   const [isLoading, setIsLoading] = useState(true);
@@ -25,7 +25,7 @@ export default function Preloader() {
           exit={{ opacity: 0, scale: 80 }}
           transition={{ duration: 0.8, ease: "easeInOut" }}
         >
-          <AppleHelloEnglishEffect speed={0.4} />
+          <HelloEnglishEffect speed={0.4} />
         </motion.div>
       )}
     </AnimatePresence>

@@ -1,8 +1,7 @@
 "use client";
 
-import { useEffect, useState, cloneElement } from "react";
+import { useEffect, useState, cloneElement, ReactElement } from "react";
 import { GitHubCalendar } from "react-github-calendar";
-import { useTheme } from "next-themes";
 import { Tooltip } from "react-tooltip";
 
 interface PR {
@@ -18,8 +17,18 @@ interface PR {
   closedAt?: string;
 }
 
+interface Edge {
+  node: PR;
+}
+
+// Type for react-github-calendar activity data
+interface Activity {
+  date: string;
+  count: number;
+  level: number;
+}
+
 const GithubGraph = () => {
-  const { theme } = useTheme();
   const [prs, setPrs] = useState<PR[]>([]);
   const [loading, setLoading] = useState(true);
   const [showAll, setShowAll] = useState(false);
@@ -83,9 +92,8 @@ const GithubGraph = () => {
 
         const data = await response.json();
         if (data.data?.search?.edges) {
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           const fetchedPRs = data.data.search.edges.map(
-            (edge: any) => edge.node,
+            (edge: Edge) => edge.node,
           );
 
           fetchedPRs.sort((a: PR, b: PR) => {
@@ -117,7 +125,7 @@ const GithubGraph = () => {
       <div className="mb-16 text-center md:text-left">
         <h2 className="text-4xl md:text-6xl font-bold text-white mb-6 tracking-tight">
           Proof of{" "}
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent to-purple-400">
+          <span className="text-transparent bg-clip-text bg-linear-to-r from-accent to-purple-400">
             Work.
           </span>
         </h2>
@@ -131,32 +139,23 @@ const GithubGraph = () => {
       {/* Graph Component */}
       <div className="w-full flex justify-center bg-[#0a0a0a] border border-white/10 p-4 md:p-10 rounded-3xl shadow-2xl mb-16 overflow-hidden">
         <div className="w-full overflow-x-auto pb-2">
-          {" "}
-          {/* Added overflow-x-auto for mobile scrolling */}
           {mounted && (
-            <div className="min-w-[600px] md:min-w-0 flex justify-center">
-              {" "}
-              {/* Forces min width so graph doesn't squash */}
+            <div className="min-w-150 md:min-w-0 flex justify-center">
               <GitHubCalendar
                 username={USERNAME}
                 colorScheme="dark"
-                blockSize={13}
+                blockSize={isMobile ? 10 : 13}
                 blockMargin={4}
                 fontSize={14}
                 theme={{
-                  dark: [
-                    "#18181b", // level 0 (zinc-900)
-                    "#27272a", // level 1 (zinc-800)
-                    "#52525b", // level 2 (zinc-600)
-                    "#a1a1aa", // level 3 (zinc-400)
-                    "#ffffff", // level 4 (white)
-                  ],
+                  dark: ["#18181b", "#27272a", "#52525b", "#a1a1aa", "#ffffff"],
                 }}
-                renderBlock={(block: any, activity: any) =>
-                  cloneElement(block, {
-                    "data-tooltip-id": "github-tooltip",
-                    "data-tooltip-content": `${activity.count} contributions on ${activity.date}`,
-                  })
+                renderBlock={
+                  (block: ReactElement, activity: Activity) =>
+                    cloneElement(block, {
+                      "data-tooltip-id": "github-tooltip",
+                      "data-tooltip-content": `${activity.count} contributions on ${activity.date}`,
+                    } as React.HTMLAttributes<HTMLElement>) // <--- FIX: Replaced 'as any' with this
                 }
               />
               <Tooltip
@@ -164,7 +163,6 @@ const GithubGraph = () => {
                 style={{
                   backgroundColor: "#18181b",
                   color: "#e5e5e5",
-                  border: "1px solid #27272a",
                   borderRadius: "8px",
                   fontSize: "12px",
                   zIndex: 50,
@@ -227,11 +225,10 @@ const GithubGraph = () => {
                 />
 
                 <div className="flex-1 min-w-0">
-                  <h3 className="text-sm md:text-base font-medium text-zinc-200 group-hover:text-white transition-colors break-words">
+                  <h3 className="text-sm md:text-base font-medium text-zinc-200 group-hover:text-white transition-colors wrap-break-words">
                     {pr.title}
                   </h3>
 
-                  {/* FIX: Added flex-wrap so dates don't get pushed out */}
                   <div className="text-xs text-zinc-500 mt-2 flex flex-wrap items-center gap-2">
                     <span className="bg-white/5 px-2 py-0.5 rounded text-zinc-400 border border-white/5">
                       {pr.repository.nameWithOwner}

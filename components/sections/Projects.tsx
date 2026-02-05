@@ -14,7 +14,70 @@ import {
 import Link from "next/link";
 import Image from "next/image";
 
+// --- React Icons Imports ---
+import {
+  FaReact,
+  FaNodeJs,
+  FaCloud,
+  FaHtml5,
+  FaCss3Alt,
+  FaDatabase,
+  FaCode,
+} from "react-icons/fa";
+import {
+  SiRedux,
+  SiExpress,
+  SiMongodb,
+  SiFirebase,
+  SiRazorpay,
+  SiTailwindcss,
+  SiJavascript,
+  SiTypescript,
+  SiFlutter,
+  SiNestjs,
+  SiPrisma,
+  SiRedis,
+  SiDocker,
+  SiDart,
+  SiPostgresql,
+  SiOpenai,
+} from "react-icons/si";
+
 gsap.registerPlugin(ScrollTrigger);
+
+// --- Tech Icon Mapping ---
+const techIcons: Record<string, React.ReactNode> = {
+  // Frontend
+  React: <FaReact className="text-[#61DAFB]" />,
+  "React.js": <FaReact className="text-[#61DAFB]" />,
+  HTML: <FaHtml5 className="text-[#E34F26]" />,
+  CSS: <FaCss3Alt className="text-[#1572B6]" />,
+  JavaScript: <SiJavascript className="text-[#F7DF1E]" />,
+  TypeScript: <SiTypescript className="text-[#3178C6]" />,
+  "Tailwind CSS": <SiTailwindcss className="text-[#38B2AC]" />,
+  Flutter: <SiFlutter className="text-[#027DFD]" />,
+  Dart: <SiDart className="text-[#0175C2]" />,
+
+  // Backend
+  "Node.js": <FaNodeJs className="text-[#68A063]" />,
+  "Express.js": <SiExpress className="text-white" />,
+  NestJS: <SiNestjs className="text-[#E0234E]" />,
+
+  // Database & State
+  MongoDB: <SiMongodb className="text-[#4DB33D]" />,
+  Redux: <SiRedux className="text-[#764ABC]" />,
+  Firebase: <SiFirebase className="text-[#FFCA28]" />,
+  PostgreSQL: <SiPostgresql className="text-[#336791]" />,
+  Prisma: <SiPrisma className="text-white" />,
+  Redis: <SiRedis className="text-[#DC382D]" />,
+  Qdrant: <FaDatabase className="text-[#AC1337]" />,
+
+  // Tools & AI
+  Docker: <SiDocker className="text-[#2496ED]" />,
+  Razorpay: <SiRazorpay className="text-[#3395FF]" />,
+  Cloudinary: <FaCloud className="text-[#3448C5]" />,
+  "Groq AI": <SiOpenai className="text-purple-400" />,
+};
 
 // --- Project Data ---
 const projects = [
@@ -22,34 +85,42 @@ const projects = [
     title: "PhishGuard",
     category: "Browser Security Extension",
     description:
-      "A real-time anti-phishing browser extension developed as a College PBL project. Features heuristic URL analysis, user reporting, and a centralized admin dashboard. Enforces pre-navigation warnings and implements JWT auth.",
+      "A real-time anti-phishing browser extension. Features heuristic URL analysis, user reporting, and a centralized admin dashboard. Enforces pre-navigation warnings and implements JWT auth.",
     techStack: [
-      "React.js",
+      "React",
       "TypeScript",
       "Redux",
+      "Tailwind CSS",
       "Node.js",
       "Express.js",
       "MongoDB",
     ],
     color: "from-blue-600 to-cyan-500",
     icon: <ShieldCheck className="w-6 h-6" />,
-    link: "#",
-    github: "https://github.com/glenjaysondmello",
+    link: "https://addons.mozilla.org/en-US/firefox/addon/phishguard-extension/",
+    github: "https://github.com/glenjaysondmello/phishguard-extension",
     type: "browser",
-    imgSrc: "/projects/phishguard-thumb.png", // Ensure this file exists in public/projects/
+    imgSrc: "/phishguard.png",
   },
   {
     title: "FluentEdge",
     category: "AI-Powered Learning Platform",
     description:
-      "An AI-driven English learning platform featuring a Flutter frontend and NestJS backend. Integrates Whisper Large v3 for speech transcription and Groq AI for text evaluation.",
-    techStack: ["Flutter", "NestJS", "PostgreSQL", "Firebase", "Dart"],
+      "An AI-driven English learning platform. Integrates Whisper Large v3 for speech transcription and Groq AI for text evaluation.",
+    techStack: [
+      "Flutter",
+      "NestJS",
+      "Prisma",
+      "PostgreSQL",
+      "Groq AI",
+      "Firebase",
+    ],
     color: "from-violet-600 to-fuchsia-500",
     icon: <Smartphone className="w-6 h-6" />,
-    link: "#",
+    link: "https://github.com/glenjaysondmello/FluentEdge",
     github: "https://github.com/glenjaysondmello/FluentEdge",
     type: "mobile",
-    imgSrc: "/fluentedge.jpeg", // Ensure this file exists in public/
+    imgSrc: "/fluent_edge.jpeg",
   },
   {
     title: "PG Finder",
@@ -57,39 +128,27 @@ const projects = [
     description:
       "A comprehensive accommodation discovery platform. Users can find and book PGs with secure Razorpay payments. Includes an AI-powered 'PG Assistant' chatbot using Qdrant vector DB.",
     techStack: [
-      "React.js",
+      "React",
+      "Redux",
       "Node.js",
+      "Express.js",
       "MongoDB",
       "Firebase",
-      "Redux",
-      "Docker",
+      "Razorpay",
+      "Cloudinary",
+      "Tailwind CSS",
+      "Redis",
+      "Qdrant",
+      "Groq AI",
     ],
     color: "from-orange-500 to-amber-500",
     icon: <Search className="w-6 h-6" />,
     link: "https://pgfinder-wheat.vercel.app",
     github: "https://github.com/glenjaysondmello/pgfinder",
     type: "browser",
-    imgSrc: "/pgfinder.jpeg", // Ensure this file exists in public/
+    imgSrc: "/pgfinder.jpeg",
   },
 ];
-
-const getIconPath = (name: string) => {
-  const map: Record<string, string> = {
-    "React.js": "/icons/react.svg",
-    TypeScript: "/icons/typescript.svg",
-    Redux: "/icons/redux.svg",
-    "Node.js": "/icons/nodejs.svg",
-    "Express.js": "/icons/express.svg",
-    MongoDB: "/icons/mongodb.svg",
-    Flutter: "/icons/flutter.svg",
-    NestJS: "/icons/nestjs.svg",
-    PostgreSQL: "/icons/prisma.svg",
-    Firebase: "/icons/firebase.svg",
-    Dart: "/icons/dart.svg",
-    Docker: "/icons/docker.svg",
-  };
-  return map[name] || "/icons/javascript.svg";
-};
 
 export default function Projects() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -98,7 +157,7 @@ export default function Projects() {
     () => {
       const cards = gsap.utils.toArray<HTMLElement>(".project-card");
 
-      cards.forEach((card, index) => {
+      cards.forEach((card) => {
         gsap.to(card, {
           scale: 0.9,
           opacity: 0.5,
@@ -126,7 +185,7 @@ export default function Projects() {
         <div className="mb-16 md:mb-24 text-center md:text-left">
           <h2 className="text-4xl md:text-6xl font-bold text-white mb-6">
             Featured <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent to-purple-400">
+            <span className="text-transparent bg-clip-text bg-linear-to-r from-accent to-purple-400">
               Projects.
             </span>
           </h2>
@@ -144,24 +203,22 @@ export default function Projects() {
                 top: `calc(5rem + ${index * 15}px)`,
               }}
             >
-              {/* --- 1. IMAGE SECTION (First on Mobile, Right on Desktop) --- */}
+              {/* --- 1. IMAGE SECTION --- */}
               <div
-                className={`relative overflow-hidden bg-gradient-to-br ${project.color} bg-opacity-5 
+                className={`relative overflow-hidden bg-linear-to-br ${project.color} bg-opacity-5 
                   order-1 lg:order-2 
-                  h-48 sm:h-64 lg:h-auto lg:min-h-[500px] 
+                  h-48 sm:h-64 lg:h-auto lg:min-h-125 
                   flex items-center justify-center p-4 lg:p-8`}
               >
                 <div className="absolute inset-0 bg-grid-pattern opacity-[0.05]" />
 
-                {/* MOCKUP CONTAINER */}
                 <div
                   className={`relative shadow-2xl transition-transform duration-500 hover:scale-[1.02] ${
                     project.type === "mobile"
-                      ? "w-[120px] h-[240px] sm:w-[160px] sm:h-[320px] lg:w-[260px] lg:h-[520px] rounded-[1.5rem] lg:rounded-[3rem] border-4 lg:border-8 border-zinc-900 bg-zinc-950"
+                      ? "w-30 h-60 sm:w-40 sm:h-80 lg:w-65 lg:h-130 rounded-3xl lg:rounded-[3rem] border-4 lg:border-8 border-zinc-900 bg-zinc-950"
                       : "w-[90%] aspect-video rounded-lg lg:rounded-xl border border-white/10 bg-zinc-900 shadow-xl"
                   }`}
                 >
-                  {/* --- THE IMAGE LOGIC --- */}
                   <div
                     className={`relative w-full h-full overflow-hidden flex items-center justify-center bg-zinc-800 ${
                       project.type === "mobile"
@@ -169,7 +226,6 @@ export default function Projects() {
                         : "rounded-md lg:rounded-lg"
                     }`}
                   >
-                    {/* Render Image if exists, else fallback text */}
                     {project.imgSrc ? (
                       <Image
                         src={project.imgSrc}
@@ -185,23 +241,22 @@ export default function Projects() {
                     )}
                   </div>
 
-                  {/* Mobile Notch */}
                   {project.type === "mobile" && (
                     <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/3 h-3 lg:h-6 bg-zinc-900 rounded-b-md lg:rounded-b-xl z-20" />
                   )}
                 </div>
               </div>
 
-              {/* --- 2. TEXT CONTENT (Second on Mobile, Left on Desktop) --- */}
+              {/* --- 2. TEXT CONTENT --- */}
               <div className="p-6 md:p-12 flex flex-col justify-between relative z-10 order-2 lg:order-1 bg-[#0a0a0a]">
                 <div
-                  className={`absolute top-0 left-0 w-32 h-32 bg-gradient-to-br ${project.color} blur-[100px] opacity-20 pointer-events-none`}
+                  className={`absolute top-0 left-0 w-32 h-32 bg-linear-to-br ${project.color} blur-[100px] opacity-20 pointer-events-none`}
                 />
 
                 <div>
                   <div className="flex items-center gap-3 mb-4 lg:mb-6">
                     <div
-                      className={`p-2 lg:p-2.5 rounded-xl bg-gradient-to-br ${project.color} bg-opacity-10 text-white border border-white/5`}
+                      className={`p-2 lg:p-2.5 rounded-xl bg-linear-to-br ${project.color} bg-opacity-10 text-white border border-white/5`}
                     >
                       {project.icon}
                     </div>
@@ -221,19 +276,24 @@ export default function Projects() {
                     {project.techStack.map((tech, i) => (
                       <div
                         key={i}
-                        className="group relative flex items-center justify-center p-2 bg-white/5 border border-white/10 rounded-lg lg:rounded-xl hover:bg-white/10 transition-colors"
+                        className="group relative flex items-center justify-center p-2.5 bg-white/5 border border-white/10 rounded-lg lg:rounded-xl hover:bg-white/10 transition-colors"
                       >
-                        <Image
-                          src={getIconPath(tech)}
-                          alt={tech}
-                          width={20}
-                          height={20}
-                          className={`w-4 h-4 lg:w-5 lg:h-5 object-contain ${
-                            tech.includes("Express") || tech.includes("Next")
-                              ? "invert"
-                              : ""
-                          }`}
-                        />
+                        {/* ICON RENDERER */}
+                        <div className="text-lg lg:text-xl relative z-10">
+                          {techIcons[tech] || (
+                            <FaCode className="text-gray-400" />
+                          )}
+                        </div>
+
+                        {/* --- TOOLTIP START --- */}
+                        <div className="absolute -top-10 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none transform group-hover:-translate-y-1 z-20">
+                          <div className="relative px-3 py-1.5 bg-zinc-800 border border-white/10 text-white text-xs font-medium rounded-md shadow-xl whitespace-nowrap">
+                            {tech}
+                            {/* Tiny Triangle Pointer */}
+                            <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-zinc-800 border-r border-b border-white/10 rotate-45 transform" />
+                          </div>
+                        </div>
+                        {/* --- TOOLTIP END --- */}
                       </div>
                     ))}
                   </div>
@@ -286,9 +346,9 @@ export default function Projects() {
             <Link
               href="https://github.com/glenjaysondmello"
               target="_blank"
-              className="group relative inline-flex h-10 lg:h-12 overflow-hidden rounded-full p-[1px]"
+              className="group relative inline-flex h-10 lg:h-12 overflow-hidden rounded-full p-px"
             >
-              <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]" />
+              <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-linear(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]" />
               <span className="inline-flex h-full w-full cursor-pointer items-center justify-center rounded-full bg-slate-950 px-6 lg:px-8 py-1 text-sm font-medium text-white backdrop-blur-3xl transition-colors hover:bg-slate-950/50 gap-2">
                 Visit GitHub Profile{" "}
                 <ArrowRight

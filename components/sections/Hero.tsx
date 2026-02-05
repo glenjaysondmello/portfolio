@@ -2,10 +2,9 @@
 import { useState, useRef } from "react";
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
-import { Github, Linkedin, ArrowDown } from "lucide-react";
+import { Github, Linkedin, Instagram, ArrowDown } from "lucide-react";
 import Image from "next/image";
 
-// Replace with your actual paths
 import ProfileImg1 from "@/public/profile1.jpeg";
 import ProfileImg2 from "@/public/profile2.jpeg";
 
@@ -20,7 +19,6 @@ export default function Hero() {
 
   useGSAP(
     () => {
-      // FIX: Added 'delay: 2.8' to sync with Preloader (2s duration + 0.8s exit)
       const tl = gsap.timeline({
         defaults: { ease: "power4.out" },
         delay: 2.8,
@@ -72,18 +70,18 @@ export default function Hero() {
   return (
     <section
       ref={containerRef}
-      className="relative min-h-[100dvh] flex flex-col md:flex-row items-center justify-center md:justify-between px-6 md:px-12 lg:px-24 overflow-hidden py-24 md:py-0 gap-8 md:gap-10"
+      className="relative min-h-dvh flex flex-col md:flex-row items-center justify-center md:justify-between px-6 md:px-12 lg:px-24 overflow-hidden py-24 md:py-0 gap-8 md:gap-10"
     >
       {/* Background Subtle Grid */}
-      <div className="absolute inset-0 bg-grid-pattern bg-[size:40px_40px] opacity-[0.05] pointer-events-none" />
+      <div className="absolute inset-0 bg-grid-pattern bg-size-[40px_40px] opacity-[0.05] pointer-events-none" />
 
       {/* Radial Gradient */}
-      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-accent/10 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2 pointer-events-none" />
+      <div className="absolute top-0 right-0 w-125 h-125 bg-accent/10 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2 pointer-events-none" />
 
       {/* --- RIGHT SIDE: IMAGE --- */}
       <div
         ref={imageRef}
-        className="z-10 flex-shrink-0 order-1 md:order-2 mb-4 md:mb-0"
+        className="z-10 shrink-0 order-1 md:order-2 mb-4 md:mb-0"
       >
         <div
           className="w-40 h-40 sm:w-64 sm:h-64 md:w-96 md:h-96 relative rounded-full overflow-hidden border-2 border-white/10 shadow-2xl transition-all duration-300 hover:border-accent/50 mx-auto"
@@ -95,10 +93,11 @@ export default function Hero() {
             src={ProfileImg1}
             alt="Glen Jayson Dmello"
             fill
+            sizes="(max-width: 640px) 160px, (max-width: 1024px) 224px, 384px"
             className={`object-cover transition-opacity duration-500 ${
               isHovered ? "opacity-0" : "opacity-100"
             }`}
-            priority
+            priority={true}
           />
 
           {/* Hover image */}
@@ -106,15 +105,16 @@ export default function Hero() {
             src={ProfileImg2}
             alt="Glen Jayson Dmello Hover"
             fill
+            sizes="(max-width: 640px) 160px, (max-width: 1024px) 224px, 384px"
             className={`object-cover absolute top-0 left-0 transition-opacity duration-500 ${
               isHovered ? "opacity-100" : "opacity-0"
             }`}
-            priority
+            loading="eager"
           />
         </div>
 
         {/* Glow behind image */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[250px] h-[250px] md:w-[350px] md:h-[350px] bg-accent/20 blur-[80px] rounded-full -z-10 pointer-events-none" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-62.5 h-62.5 md:w-87.5 md:h-87.5 bg-accent/20 blur-[80px] rounded-full -z-10 pointer-events-none" />
       </div>
 
       {/* --- LEFT SIDE: TEXT CONTENT --- */}
@@ -174,9 +174,9 @@ export default function Hero() {
             .
           </h2>
           <p className="mt-4 text-gray-500 text-xs sm:text-sm md:text-base leading-relaxed max-w-lg mx-auto md:mx-0">
-            Full Stack Developer specializing in the MERN Stack, NestJS, and
-            Flutter. Crafting high-performance web and mobile applications with
-            focus on AI integration and real-time systems.
+            Full Stack Developer specializing in the MERN Stack, Next.js,
+            NestJS, and Flutter. Crafting high-performance web and mobile
+            applications with focus on AI integration and real-time systems.
           </p>
         </div>
 
@@ -186,7 +186,8 @@ export default function Hero() {
           className="mt-6 md:mt-10 flex flex-wrap items-center justify-center md:justify-start gap-4 md:gap-6"
         >
           <a
-            href="#"
+            href="/__resume___.pdf"
+            target="_blank"
             className="group flex items-center gap-2 px-5 py-2.5 md:px-6 md:py-3 bg-white text-black rounded-full font-medium text-sm md:text-base transition-transform hover:scale-105"
           >
             <span>Download Resume</span>
@@ -196,20 +197,31 @@ export default function Hero() {
             />
           </a>
 
-          <div className="flex gap-4">
+          {/* Social Icons - Flex Container adjusts automatically */}
+          <div className="flex gap-3 md:gap-4">
             <a
               href="https://github.com/glenjaysondmello"
               target="_blank"
-              className="p-2.5 md:p-3 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 transition-colors text-white"
+              aria-label="GitHub"
+              className="p-2.5 md:p-3 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 transition-colors text-white transform hover:scale-110"
             >
               <Github size={20} />
             </a>
             <a
-              href="https://linkedin.com"
+              href="https://www.linkedin.com/in/glen-jayson-dmello-927415251"
               target="_blank"
-              className="p-2.5 md:p-3 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 transition-colors text-white"
+              aria-label="LinkedIn"
+              className="p-2.5 md:p-3 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 transition-colors text-white transform hover:scale-110"
             >
               <Linkedin size={20} />
+            </a>
+            <a
+              href="https://www.instagram.com/_mello.d.glen_"
+              target="_blank"
+              aria-label="Instagram"
+              className="p-2.5 md:p-3 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 transition-colors text-white transform hover:scale-110"
+            >
+              <Instagram size={20} />
             </a>
           </div>
         </div>

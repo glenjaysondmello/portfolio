@@ -94,9 +94,9 @@ export default function Contact() {
       className="relative z-50 py-24 bg-background overflow-hidden"
     >
       {/* Background Effects */}
-      <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+      <div className="absolute top-0 left-0 w-full h-px bg-linear-to-r from-transparent via-white/10 to-transparent" />
       <div className="absolute inset-0 bg-grid-pattern opacity-[0.03]" />
-      <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-accent/5 rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-125 h-125 bg-accent/5 rounded-full blur-[120px] pointer-events-none" />
 
       {/* Toaster for Notifications */}
       <Toaster position="bottom-center" />
@@ -105,7 +105,7 @@ export default function Contact() {
         <div className="max-w-4xl mx-auto text-center mb-16">
           <h2 className="contact-item text-5xl md:text-7xl font-bold text-white mb-6 tracking-tight">
             Let&apos;s Build <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent to-purple-400">
+            <span className="text-transparent bg-clip-text bg-linear-to-r from-accent to-purple-400">
               Something Epic.
             </span>
           </h2>

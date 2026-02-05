@@ -19,7 +19,7 @@ type Props = React.ComponentProps<typeof motion.svg> & {
   onAnimationComplete?: () => void;
 };
 
-function AppleHelloVietnameseEffect({
+function HelloVietnameseEffect({
   className,
   speed = 1,
   onAnimationComplete,
@@ -186,7 +186,7 @@ function AppleHelloVietnameseEffect({
   );
 }
 
-function AppleHelloEnglishEffect({
+function HelloEnglishEffect({
   className,
   speed = 1,
   onAnimationComplete,
@@ -240,4 +240,4 @@ function AppleHelloEnglishEffect({
   );
 }
 
-export { AppleHelloEnglishEffect, AppleHelloVietnameseEffect };
+export { HelloEnglishEffect, HelloVietnameseEffect };
