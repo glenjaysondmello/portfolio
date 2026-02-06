@@ -19,7 +19,7 @@ export default function Preloader() {
     <AnimatePresence>
       {isLoading && (
         <motion.div
-          className="fixed inset-0 z-9999 flex items-center justify-center bg-white dark:bg-black text-white dark:text-white"
+          className="fixed inset-0 z-9999 flex items-center justify-center bg-white dark:bg-black text-black dark:text-white"
           initial={{ opacity: 1, scale: 1 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 80 }}

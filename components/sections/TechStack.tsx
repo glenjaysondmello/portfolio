@@ -91,9 +91,11 @@ export default function TechStack() {
 
       <div className="container mx-auto px-6 relative z-10">
         <div className="flex flex-col items-center mb-16 text-center">
-          <h2 className="text-3xl md:text-5xl font-bold mb-6 tracking-tight">
-            <span className="text-white">Technical </span>
-            <span className="text-zinc-500">Arsenal</span>
+          <h2 className="text-4xl md:text-6xl font-bold text-white mb-6">
+            Technical <br />
+            <span className="text-transparent bg-clip-text bg-linear-to-r from-accent to-purple-400">
+              Arsenal.
+            </span>
           </h2>
           <p className="text-zinc-400 max-w-xl mx-auto text-lg leading-relaxed mb-8">
             The battle-tested tools and frameworks I use to craft
