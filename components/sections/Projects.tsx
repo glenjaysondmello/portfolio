@@ -1,5 +1,5 @@
 "use client";
-import { useRef } from "react";
+import { useRef, useState } from "react"; // Added useState
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -153,6 +153,10 @@ const projects = [
 export default function Projects() {
   const containerRef = useRef<HTMLDivElement>(null);
 
+  // --- STATE FOR MOBILE TOOLTIPS ---
+  // Tracks which unique icon ID is currently tapped
+  const [activeTooltip, setActiveTooltip] = useState<string | null>(null);
+
   useGSAP(
     () => {
       const cards = gsap.utils.toArray<HTMLElement>(".project-card");
@@ -179,6 +183,8 @@ export default function Projects() {
     <section
       ref={containerRef}
       className="py-12 md:py-24 bg-background relative z-10"
+      // Optional: Close tooltip if clicking anywhere else in the section
+      onClick={() => setActiveTooltip(null)}
     >
       <div className="container mx-auto px-4 md:px-12">
         {/* Header */}
@@ -193,14 +199,14 @@ export default function Projects() {
         </div>
 
         <div className="flex flex-col items-center pb-20">
-          {projects.map((project, index) => (
+          {projects.map((project, projectIndex) => (
             <div
-              key={index}
+              key={projectIndex}
               className="project-card sticky w-full max-w-6xl bg-[#0a0a0a] border border-white/10 rounded-3xl overflow-hidden shadow-2xl flex flex-col lg:grid lg:grid-cols-2"
               style={{
-                zIndex: index + 1,
-                marginBottom: index === projects.length - 1 ? 0 : "40vh",
-                top: `calc(5rem + ${index * 15}px)`,
+                zIndex: projectIndex + 1,
+                marginBottom: projectIndex === projects.length - 1 ? 0 : "40vh",
+                top: `calc(5rem + ${projectIndex * 15}px)`,
               }}
             >
               {/* --- 1. IMAGE SECTION --- */}
@@ -273,29 +279,48 @@ export default function Projects() {
                   </p>
 
                   <div className="flex flex-wrap gap-2 lg:gap-3 mb-8 lg:mb-10">
-                    {project.techStack.map((tech, i) => (
-                      <div
-                        key={i}
-                        className="group relative flex items-center justify-center p-2.5 bg-white/5 border border-white/10 rounded-lg lg:rounded-xl hover:bg-white/10 transition-colors"
-                      >
-                        {/* ICON RENDERER */}
-                        <div className="text-lg lg:text-xl relative z-10">
-                          {techIcons[tech] || (
-                            <FaCode className="text-gray-400" />
-                          )}
-                        </div>
+                    {project.techStack.map((tech, i) => {
+                      // Generate a unique ID for each icon to track clicks
+                      const tooltipId = `${projectIndex}-${i}`;
+                      const isActive = activeTooltip === tooltipId;
 
-                        {/* --- TOOLTIP START --- */}
-                        <div className="absolute -top-10 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none transform group-hover:-translate-y-1 z-20">
-                          <div className="relative px-3 py-1.5 bg-zinc-800 border border-white/10 text-white text-xs font-medium rounded-md shadow-xl whitespace-nowrap">
-                            {tech}
-                            {/* Tiny Triangle Pointer */}
-                            <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-zinc-800 border-r border-b border-white/10 rotate-45 transform" />
+                      return (
+                        <div
+                          key={i}
+                          // Add click handler for mobile
+                          onClick={(e) => {
+                            e.stopPropagation(); // Prevent closing immediately via parent click
+                            setActiveTooltip(isActive ? null : tooltipId); // Toggle logic
+                          }}
+                          className="group relative flex items-center justify-center p-2.5 bg-white/5 border border-white/10 rounded-lg lg:rounded-xl hover:bg-white/10 transition-colors cursor-pointer"
+                        >
+                          {/* ICON RENDERER */}
+                          <div className="text-lg lg:text-xl relative z-10">
+                            {techIcons[tech] || (
+                              <FaCode className="text-gray-400" />
+                            )}
                           </div>
+
+                          {/* --- TOOLTIP START --- */}
+                          <div
+                            className={`absolute -top-10 left-1/2 -translate-x-1/2 transition-all duration-300 pointer-events-none transform z-20
+                              ${
+                                isActive
+                                  ? "opacity-100 -translate-y-1" // Visible if clicked (Mobile/Tablet)
+                                  : "opacity-0 group-hover:opacity-100 group-hover:-translate-y-1" // Visible on Hover (Desktop)
+                              }
+                            `}
+                          >
+                            <div className="relative px-3 py-1.5 bg-zinc-800 border border-white/10 text-white text-xs font-medium rounded-md shadow-xl whitespace-nowrap">
+                              {tech}
+                              {/* Tiny Triangle Pointer */}
+                              <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-zinc-800 border-r border-b border-white/10 rotate-45 transform" />
+                            </div>
+                          </div>
+                          {/* --- TOOLTIP END --- */}
                         </div>
-                        {/* --- TOOLTIP END --- */}
-                      </div>
-                    ))}
+                      );
+                    })}
                   </div>
                 </div>
 

@@ -79,7 +79,7 @@ export default function About() {
                   <span className="text-accent">SJEC Mangalore VTU</span>. My
                   expertise lies in building high-performance applications using
                   the <strong className="text-white">MERN Stack</strong>,{" "}
-                  <strong className="text-white">Next.js</strong>, and{" "}
+                  <strong className="text-white">Next.js</strong> and{" "}
                   <strong className="text-white">NestJS</strong>.
                 </p>
                 <p>
