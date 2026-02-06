@@ -12,7 +12,7 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Glen Jayson Dmello | Full Stack & Mobile Developer",
+  title: "Glen Jayson Dmello",
   description:
     "Portfolio of Glen Jayson Dmello, a Full Stack Developer specializing in MERN, Next.js, NestJS, and Flutter.",
   keywords: [

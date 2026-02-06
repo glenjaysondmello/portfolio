@@ -15,6 +15,9 @@ export default function Hero() {
   const techRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLDivElement>(null);
 
+  // Ref to track if the user is using touch (mobile/tablet)
+  const isTouchRef = useRef(false);
+
   const [isHovered, setIsHovered] = useState(false);
 
   useGSAP(
@@ -84,9 +87,20 @@ export default function Hero() {
         className="z-10 shrink-0 order-1 md:order-2 mb-4 md:mb-0"
       >
         <div
-          className="w-40 h-40 sm:w-64 sm:h-64 md:w-96 md:h-96 relative rounded-full overflow-hidden border-2 border-white/10 shadow-2xl transition-all duration-300 hover:border-accent/50 mx-auto"
-          onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={() => setIsHovered(false)}
+          className="w-40 h-40 sm:w-64 sm:h-64 md:w-96 md:h-96 relative rounded-full overflow-hidden border-2 border-white/10 shadow-2xl transition-all duration-300 hover:border-accent/50 mx-auto cursor-pointer"
+          // FIX: Handle Touch vs Mouse
+          onTouchStart={() => {
+            isTouchRef.current = true; // Flag this interaction as touch
+          }}
+          onMouseEnter={() => {
+            if (!isTouchRef.current) setIsHovered(true); // Only hover if NOT touch
+          }}
+          onMouseLeave={() => {
+            if (!isTouchRef.current) setIsHovered(false); // Only unhover if NOT touch
+          }}
+          onClick={() => {
+            if (isTouchRef.current) setIsHovered((prev) => !prev); // Toggle on click for touch users
+          }}
         >
           {/* Base image */}
           <Image
@@ -174,9 +188,9 @@ export default function Hero() {
             .
           </h2>
           <p className="mt-4 text-gray-500 text-xs sm:text-sm md:text-base leading-relaxed max-w-lg mx-auto md:mx-0">
-            Full Stack Developer specializing in the MERN Stack, Next.js,
-            NestJS, and Flutter. Crafting high-performance web and mobile
-            applications with focus on AI integration and real-time systems.
+            Full Stack Developer specializing in the MERN Stack, Next.js, NestJS
+            and Flutter. Crafting high-performance web and mobile applications
+            with focus on AI integration and real-time systems.
           </p>
         </div>
 
@@ -186,7 +200,7 @@ export default function Hero() {
           className="mt-6 md:mt-10 flex flex-wrap items-center justify-center md:justify-start gap-4 md:gap-6"
         >
           <a
-            href="/__resume___.pdf"
+            href="/resume.pdf"
             target="_blank"
             className="group flex items-center gap-2 px-5 py-2.5 md:px-6 md:py-3 bg-white text-black rounded-full font-medium text-sm md:text-base transition-transform hover:scale-105"
           >

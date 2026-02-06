@@ -160,7 +160,7 @@ export default function Projects() {
       cards.forEach((card) => {
         gsap.to(card, {
           scale: 0.9,
-          opacity: 0.5,
+          opacity: 0.1,
           filter: "blur(10px)",
           ease: "power1.in",
           scrollTrigger: {
