@@ -27,6 +27,9 @@ export const metadata: Metadata = {
     "Mobile Developer",
     "Portfolio",
   ],
+  icons: {
+    icon: "/developer-z-os.svg",
+  },
 };
 
 export default function RootLayout({
