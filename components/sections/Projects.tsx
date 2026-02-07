@@ -1,5 +1,5 @@
 "use client";
-import { useRef, useState } from "react"; // Added useState
+import { useRef, useState, CSSProperties } from "react";
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -85,7 +85,7 @@ const projects = [
     title: "PhishGuard",
     category: "Browser Security Extension",
     description:
-      "A real-time anti-phishing browser extension. Features heuristic URL analysis, user reporting, and a centralized admin dashboard. Enforces pre-navigation warnings and implements JWT auth.",
+      "A real-time security tool that protects users from online scams by identifying and blocking malicious websites. It provides instant alerts for suspicious links and allows users to report threats to keep the community safe.",
     techStack: [
       "React",
       "TypeScript",
@@ -104,15 +104,17 @@ const projects = [
   },
   {
     title: "FluentEdge",
-    category: "AI-Powered Learning Platform",
+    category: "AI Language Coaching App",
     description:
-      "An AI-driven English learning platform. Integrates Whisper Large v3 for speech transcription and Groq AI for text evaluation.",
+      "An interactive platform designed to improve English proficiency through immersive speaking and typing tests. It provides instant feedback on pronunciation and writing accuracy to help users track and enhance their communication skills.",
     techStack: [
       "Flutter",
       "NestJS",
+      "GraphQL",
       "Prisma",
       "PostgreSQL",
       "Groq AI",
+      "Whisper AI",
       "Firebase",
     ],
     color: "from-violet-600 to-fuchsia-500",
@@ -126,7 +128,7 @@ const projects = [
     title: "PG Finder",
     category: "Full Stack PG Platform",
     description:
-      "A comprehensive accommodation discovery platform. Users can find and book PGs with secure Razorpay payments. Includes an AI-powered 'PG Assistant' chatbot using Qdrant vector DB.",
+      "A comprehensive marketplace for finding and booking hostel accommodations. Users can easily search, filter, and secure PG listings with integrated payments while getting instant help from an AI-powered property assistant.",
     techStack: [
       "React",
       "Redux",
@@ -154,7 +156,6 @@ export default function Projects() {
   const containerRef = useRef<HTMLDivElement>(null);
 
   // --- STATE FOR MOBILE TOOLTIPS ---
-  // Tracks which unique icon ID is currently tapped
   const [activeTooltip, setActiveTooltip] = useState<string | null>(null);
 
   useGSAP(
@@ -183,7 +184,6 @@ export default function Projects() {
     <section
       ref={containerRef}
       className="py-12 md:py-24 bg-background relative z-10"
-      // Optional: Close tooltip if clicking anywhere else in the section
       onClick={() => setActiveTooltip(null)}
     >
       <div className="container mx-auto px-4 md:px-12">
@@ -202,19 +202,24 @@ export default function Projects() {
           {projects.map((project, projectIndex) => (
             <div
               key={projectIndex}
-              className="project-card sticky w-full max-w-6xl bg-[#0a0a0a] border border-white/10 rounded-3xl overflow-hidden shadow-2xl flex flex-col lg:grid lg:grid-cols-2"
-              style={{
-                zIndex: projectIndex + 1,
-                marginBottom: projectIndex === projects.length - 1 ? 0 : "40vh",
-                top: `calc(5rem + ${projectIndex * 15}px)`,
-              }}
+              // FIX: Re-enabled "sticky" for all screens
+              // Added "top-16" for mobile offset (sticks below header)
+              // Added "max-h-[85vh]" to prevent it from being taller than the screen
+              className="project-card sticky w-full max-w-6xl bg-[#0a0a0a] border border-white/10 rounded-3xl overflow-hidden shadow-2xl flex flex-col lg:grid lg:grid-cols-2 mb-20 lg:mb-[40vh] last:mb-0 top-16 lg:top-[var(--stack-top)] max-h-[85vh] lg:max-h-none"
+              style={
+                {
+                  zIndex: projectIndex + 1,
+                  "--stack-top": `calc(5rem + ${projectIndex * 15}px)`,
+                } as CSSProperties
+              }
             >
               {/* --- 1. IMAGE SECTION --- */}
               <div
                 className={`relative overflow-hidden bg-linear-to-br ${project.color} bg-opacity-5 
                   order-1 lg:order-2 
-                  h-48 sm:h-64 lg:h-auto lg:min-h-125 
-                  flex items-center justify-center p-4 lg:p-8`}
+                  h-32 sm:h-56 lg:h-auto lg:min-h-125 
+                  flex items-center justify-center p-4 lg:p-8 shrink-0`}
+                // Added "h-32" (smaller image on mobile) and "shrink-0" so it doesn't get squashed
               >
                 <div className="absolute inset-0 bg-grid-pattern opacity-[0.05]" />
 
@@ -254,77 +259,73 @@ export default function Projects() {
               </div>
 
               {/* --- 2. TEXT CONTENT --- */}
-              <div className="p-6 md:p-12 flex flex-col justify-between relative z-10 order-2 lg:order-1 bg-[#0a0a0a]">
+              {/* FIX: Added "overflow-y-auto" and "flex-1"
+                  This ensures that if the text/links are too tall, they scroll INSIDE the card
+                  instead of being cut off by the next sticky card. */}
+              <div className="p-5 md:p-12 flex flex-col justify-between relative z-10 order-2 lg:order-1 bg-[#0a0a0a] overflow-y-auto lg:overflow-visible flex-1 custom-scrollbar">
                 <div
                   className={`absolute top-0 left-0 w-32 h-32 bg-linear-to-br ${project.color} blur-[100px] opacity-20 pointer-events-none`}
                 />
 
                 <div>
-                  <div className="flex items-center gap-3 mb-4 lg:mb-6">
+                  <div className="flex items-center gap-2 mb-3 lg:mb-6">
                     <div
-                      className={`p-2 lg:p-2.5 rounded-xl bg-linear-to-br ${project.color} bg-opacity-10 text-white border border-white/5`}
+                      className={`p-1.5 lg:p-2.5 rounded-xl bg-linear-to-br ${project.color} bg-opacity-10 text-white border border-white/5`}
                     >
                       {project.icon}
                     </div>
-                    <span className="text-xs lg:text-sm font-semibold text-zinc-400 tracking-wider uppercase">
+                    <span className="text-[10px] lg:text-sm font-semibold text-zinc-400 tracking-wider uppercase">
                       {project.category}
                     </span>
                   </div>
 
-                  <h3 className="text-2xl lg:text-4xl font-bold text-white mb-3 lg:mb-6">
+                  <h3 className="text-xl lg:text-4xl font-bold text-white mb-2 lg:mb-6">
                     {project.title}
                   </h3>
-                  <p className="text-zinc-400 leading-relaxed text-sm lg:text-lg mb-6 lg:mb-8">
+                  <p className="text-zinc-400 leading-snug lg:leading-relaxed text-sm lg:text-lg mb-4 lg:mb-8">
                     {project.description}
                   </p>
 
-                  <div className="flex flex-wrap gap-2 lg:gap-3 mb-8 lg:mb-10">
+                  <div className="flex flex-wrap gap-2 lg:gap-3 mb-6 lg:mb-10">
                     {project.techStack.map((tech, i) => {
-                      // Generate a unique ID for each icon to track clicks
                       const tooltipId = `${projectIndex}-${i}`;
                       const isActive = activeTooltip === tooltipId;
 
                       return (
                         <div
                           key={i}
-                          // Add click handler for mobile
                           onClick={(e) => {
-                            e.stopPropagation(); // Prevent closing immediately via parent click
-                            setActiveTooltip(isActive ? null : tooltipId); // Toggle logic
+                            e.stopPropagation();
+                            setActiveTooltip(isActive ? null : tooltipId);
                           }}
                           className="group relative flex items-center justify-center p-2.5 bg-white/5 border border-white/10 rounded-lg lg:rounded-xl hover:bg-white/10 transition-colors cursor-pointer"
                         >
-                          {/* ICON RENDERER */}
                           <div className="text-lg lg:text-xl relative z-10">
                             {techIcons[tech] || (
                               <FaCode className="text-gray-400" />
                             )}
                           </div>
-
-                          {/* --- TOOLTIP START --- */}
                           <div
                             className={`absolute -top-10 left-1/2 -translate-x-1/2 transition-all duration-300 pointer-events-none transform z-20
                               ${
                                 isActive
-                                  ? "opacity-100 -translate-y-1" // Visible if clicked (Mobile/Tablet)
-                                  : "opacity-0 group-hover:opacity-100 group-hover:-translate-y-1" // Visible on Hover (Desktop)
+                                  ? "opacity-100 -translate-y-1"
+                                  : "opacity-0 group-hover:opacity-100 group-hover:-translate-y-1"
                               }
                             `}
                           >
                             <div className="relative px-3 py-1.5 bg-zinc-800 border border-white/10 text-white text-xs font-medium rounded-md shadow-xl whitespace-nowrap">
                               {tech}
-                              {/* Tiny Triangle Pointer */}
                               <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-zinc-800 border-r border-b border-white/10 rotate-45 transform" />
                             </div>
                           </div>
-                          {/* --- TOOLTIP END --- */}
                         </div>
                       );
                     })}
                   </div>
                 </div>
 
-                <div className="flex items-center gap-4 lg:gap-6">
+                <div className="flex items-center gap-4 lg:gap-6 pb-2">
                   <Link
                     href={project.github}
                     target="_blank"
@@ -352,11 +353,13 @@ export default function Projects() {
 
           {/* --- FINAL CARD --- */}
           <div
-            className="project-card sticky w-full max-w-6xl bg-[#0a0a0a] border border-white/10 rounded-3xl overflow-hidden shadow-2xl flex flex-col items-center justify-center text-center py-20 px-6"
-            style={{
-              zIndex: 99,
-              top: `calc(5rem + ${projects.length * 15}px)`,
-            }}
+            className="project-card sticky w-full max-w-6xl bg-[#0a0a0a] border border-white/10 rounded-3xl overflow-hidden shadow-2xl flex flex-col items-center justify-center text-center py-20 px-6 top-16 lg:top-[var(--stack-top)]"
+            style={
+              {
+                zIndex: 99,
+                "--stack-top": `calc(5rem + ${projects.length * 15}px)`,
+              } as CSSProperties
+            }
           >
             <div className="w-16 h-16 lg:w-24 lg:h-24 bg-white/5 rounded-full flex items-center justify-center mb-6 lg:mb-8 animate-pulse">
               <Github size={32} className="text-white lg:w-12 lg:h-12" />
